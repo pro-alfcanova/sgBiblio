@@ -13,6 +13,8 @@ Sei que deveria revisar e refatorar páginas HTML, estilos CSS e os códigos Jav
 
 Sendo muito otimista, meu DB são planilhas do GoogleSheets, uma para cada função: leitores, livros, emprestimos e usuários.
 
-A única previamente preenchida é a de usuário, com o usuário administrador e sua senha de acesso.
+Anexei algumas planilhas nor formato XLSX como modelo e estão pré preenchidas com casos teste.
 
-Mas, deixo aqui para vocês os códigos e se puderem contribuir agradeço imensamente.
+Deixo aqui para vocês os códigos e se puderem contribuir agradeço imensamente.
+
+Obrigado, alfcanova 26/09/2024
