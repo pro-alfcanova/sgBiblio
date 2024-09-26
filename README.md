@@ -11,4 +11,8 @@ Desse modo, resolvi utilizar a infraestura do Google Apps Script (GAS) que possu
 
 Sei que deveria revisar e refatorar páginas HTML, estilos CSS e os códigos JavaScrips, e talvez eu faça em versões futuras.
 
+Sendo muito otimista, meu DB são planilhas do GoogleSheets, uma para cada função: leitores, livros, emprestimos e usuários.
+
+A única previamente preenchida é a de usuário, com o usuário administrador e sua senha de acesso.
+
 Mas, deixo aqui para vocês os códigos e se puderem contribuir agradeço imensamente.
