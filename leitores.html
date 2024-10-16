@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sistema de Gerenciamento de Bibliotecas - Leitores</title>
+
+        <style>
+            /* Estilos globais para o sistema */
+            html, body { 
+                height: 100%;
+                margin: 0;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #F2F2F2;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            header {
+                background-color: #ADD8E6;
+                color: #000000;
+                padding: 10px;
+                text-align: center;
+                font-size: 30px;
+                font-weight: bold;
+            }
+            nav {
+                background-color: #333333;
+                padding: 10px;
+                text-align: center;
+            }
+            nav a {
+                color: #FFFFFF;
+                text-decoration: none;
+                padding: 10px 20px;
+                margin: 0 10px;
+                border-radius: 5px;
+            }
+            nav a:hover {
+                background-color: #555555;
+            }
+            .main-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .message {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 48px;
+                font-weight: bold;
+                color: green;
+                margin: 20px;
+            }
+
+            /* Estilos básicos para o modal */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 0;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            .modal-content {
+                background-color: #FEFEFE;
+                padding: 10px;
+                border: 10px solid #007BFF;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 800px;
+                max-height: 85vh;
+                overflow-x: auto;
+                overflow-y: auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                box-sizing: border-box;
+            }
+            .close {
+                color: #6FA8DC;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+            .close:hover, .close:focus {
+                color: #0B5394;
+                text-decoration: none;
+            }
+            button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                background-color: #007BFF;
+                color: #000000;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056B3;
+                color: #FFFFFF;
+                font-weight: bold;
+            }
+
+            /* Estilos básicos para o modal success */
+            .modalSuccess {
+                display: none;
+                position: absolute;
+                z-index: 1000 !important;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            .modalSuccess-content {
+                background: #D9EAD3;
+                margin: 15% auto;
+                padding: 20px;
+                border: 10px solid #38761D;
+                width: 300px;
+                border-radius: 5px;
+                text-align: center;
+            }
+            .modalSuccess-header {
+                font-size: 18px;
+                color: #000000;
+                font-weight: bold;
+            }
+            .modalSuccess-body {
+                margin-top: 10px;
+                color: #000000;
+                font-size: 16px;
+            }
+            .closeSuccess {
+                color: #93C47D;
+                font-size: 28px;
+                font-weight: bold;
+                float: right;
+                cursor: pointer;
+            }
+            .closeSuccess:hover, .closeSuccess:focus {
+                color: #38761D;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .buttonSuccess {
+                margin-top: 15px;
+                padding: 10px 20px;
+                background-color: #93C47D;
+                color: #000000;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .buttonSuccess:hover {
+                background-color: #38761D;
+                color: #FFFFFF;
+                font-weight: bold;
+            }
+
+            /* Estilos básicos para o modal notice */
+            modalNotice {
+                display: none;
+                position: fixed;
+                z-index: 1000 !important;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            .modalNotice-content {
+                background: #FFF2CC;
+                margin: 15% auto;
+                padding: 20px;
+                border: 10px solid #BF9000;
+                width: 300px;
+               border-radius: 5px;
+                text-align: center;
+            }
+            .modalNotice-header {
+                font-size: 18px;
+                color: #000000;
+                font-weight: bold;
+            }
+            .modalNotice-body {
+                margin-top: 10px;
+                color: #000000;
+                font-size: 16px;
+            }
+            .closeNotice {
+                color: #FFD966;
+                font-size: 28px;
+                font-weight: bold;
+                float: right;
+                cursor: pointer;
+            }
+            .closeNotice:hover, .closeSuccess:focus {
+                color: #BF9000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .buttonNotice {
+                margin-top: 15px;
+                padding: 10px 20px;
+                background-color: #FFD966;
+                color: #000000;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .buttonNotice:hover {
+                background-color: #BF9000;
+                color: #FFFFFF;
+                font-weight: bold;
+            }
+
+            /* Estilos básicos para o modal error */
+            .modalError {
+                display: none;
+                position: absolute;
+                z-index: 1000 !important;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            .modalError-content {
+                background: #F4CCCC;
+                margin: 15% auto;
+                padding: 20px;
+                border: 10px solid #990000;
+                width: 300px;
+                border-radius: 5px;
+                text-align: center;
+            }
+            .modalError-header {
+                font-size: 18px;
+                color: #000000;
+                font-weight: bold;
+            }
+            .modalError-body {
+                margin-top: 10px;
+                color: #000000;
+                font-size: 16px;
+            }
+            .closeError {
+                color: #E06666;
+                font-size: 28px;
+                font-weight: bold;
+                float: right;
+                cursor: pointer;
+            }
+            .closeError:hover, .Error:focus {
+                color: #990000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .buttonError {
+                margin-top: 15px;
+                padding: 10px 20px;
+                background-color: #E06666;
+                color: #000000;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            .buttonError:hover {
+                background-color: #990000;
+                color: #FFFFFF;
+                font-weight: bold;
+            }
+            footer {
+                background-color: #333333;
+                color: #FFFFFF;
+                padding: 10px;
+                text-align: center;
+                width: 100%;
+                position: fixed;
+                bottom: 0;
+            }
+
+            /* Tabelas para geração de relatórios */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: left;
+            }
+            td {
+                border: 2px solid #ddd;
+                padding: 5px;
+            }
+            .label-cell {
+                width: 140px;
+                font-weight: bold;
+                text-align: right;
+            }
+            .data-cell {
+                width: calc(100% - 140px);
+                text-align: left;
+            }
+            .empty-row td {
+                border: none;
+            }
+
+            /* Estilos para impressão */
+            @media print {
+                body * {
+                    display: none !important;
+                }
+                #leitoresTable, #leitoresTable * {
+                    display: block !important;
+                    visibility: visible !important;
+                }
+                #leitoresTable {
+                    width: 100% !important;
+                    margin: 0 auto !important;
+                }
+                .button-container, .close {
+                    display: none !important;
+                }
+                @page {
+                    size: portrait;
+                    margin: 10mm;
+                    counter-increment: page;
+                    @top-center {
+                        content: "Listagem de Usuários";
+                    }
+                }
+            }
+        </style>
+
+        <!-- Biblioteca Google Charts -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body>
+        <header>
+            EE Plínio Ferraz - Sistema de Gerenciamento de Bibliotecas: Leitores
+        </header>
+
+        <div class="main-content" id="mainContent">
+            <nav id="menu">
+                <a href="#" onclick="openModal('modal_leitores_incluir')">Incluir</a>
+                <a href="#" onclick="openModal('modal_leitores_alterar')">Alterar</a>
+                <a href="#" onclick="openModal('modal_leitores_excluir')">Excluir</a>
+                <a href="#" onclick="openModal('modal_leitores_consultar')">Consultar</a>
+                <a href="#" onclick="loadPage('index')">Voltar</a>
+            </nav>
+            <div class="message">Aguardando...</div>
+        </div>
+
+        <!-- Modal de alerta de sucesso -->
+        <div id="modal_success" class="modalSuccess">
+            <div class="modalSuccess-content">
+                <span class="closeSuccess" onclick="closeModal('modal_success')">&times;</span>
+                <div class="modalSuccess-header">SUCESSO</div>
+                <div class="modalSuccess-body" id="successMessage">Mensagem de sucesso aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonSuccess" onclick="closeModal('modal_success')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de notificação -->
+        <div id="modal_notice" class="modalNotice">
+            <div class="modalNotice-content">
+                <span class="closeNotice" onclick="closeModal('modal_notice')">&times;</span>
+                <div class="modalNotice-header">ATENÇÃO</div>
+                <div class="modalNotice-body" id="noticeMessage">Mensagem de notificação aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonNotice" onclick="closeModal('modal_notice')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de erro -->
+        <div id="modal_error" class="modalError">
+            <div class="modalError-content">
+                <span class="closeError" onclick="closeModal('modal_error')">&times;</span>
+                <div class="modalError-header">ERRO</div>
+                <div class="modalError-body" id="errorMessage">Mensagem de erro aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonError" onclick="closeModal('modal_error')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Incluir Leitores -->
+        <div id="modal_leitores_incluir" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_leitores_incluir')">&times;</span>
+                <h2 style="text-align: center;">Incluir cadastro de leitor no sistema</h2>
+
+                <form id="formLeitoresIncluir" action="#" method="POST">
+                    <div style="max-width: 80%; text-align: left; margin: 0 auto;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_leitor_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Código do leitor:</label>
+                            <input type="text" style="width: 150px; text-align: left;" id="codigo_leitor_incluir" name="codigo_leitor_incluir" placeholder="Insira o RA do leitor" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="nome_leitor_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Nome do leitor:</label>
+                            <input type="text" style="width: 360px;" id="nome_leitor_incluir" name="nome_leitor_incluir" placeholder="Insira o nome completo do leitor" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="funcao_leitor_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Função de leitor:</label>
+                            <select style="width: 100px;" id="funcao_leitor_incluir" name="funcao_leitor_incluir" required>
+                                <option value="Aluno">Aluno</option>
+                                <option value="Comunidade">Comunidade</option>
+                                <option value="Funcionário">Funcionário</option>
+                                <option value="Outros">Outros</option>
+                                <option value="Professor">Professor</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="local_leitor_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Local do leitor:</label>
+                            <input type="text" style="width: 360px;" id="local_leitor_incluir" name="local_leitor_incluir" placeholder="Insira a turma, disciplina, função ou local de trabalho" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="contato_leitor_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Contato:</label>
+                            <input type="text" style="width: 360px;" id="contato_leitor_incluir" name="contato_leitor_incluir" placeholder="Insira o telefone e/ou e-mail (separados por ;)" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioIncluirLeitor()">Incluir</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Alterar Leitores -->
+        <div id="modal_leitores_alterar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_leitores_alterar')">&times;</span>
+                <h2 style="text-align: center;">Alterar cadastro de leitor no sistema</h2>
+
+                <form id="formLeitoresAlterar" action="#" method="POST">
+                    <div style="max-width: 80%; text-align: left; margin: 0 auto;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_leitor_alterar" style="width: 150px; text-align: right; padding-right: 10px">Código do leitor:</label>
+                            <input type="text" style="width: 150px; text-align: left;" id="codigo_leitor_alterar" name="codigo_leitor_alterar" placeholder="Insira o RA do leitor" required><br>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button id="buscarLeitoresAlterarBotao" type="button" onclick="buscarLeitorAlterar()">Buscar leitor</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="nome_leitor_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Nome do leitor:</label>
+                            <input type="text" style="width: 360px;" id="nome_leitor_alterar" name="nome_leitor_alterar" placeholder="Atualize o nome completo do leitor" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="funcao_leitor_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Função de leitor:</label>
+                            <select style="width: 100px;" id="funcao_leitor_alterar" name="funcao_leitor_alterar" required>
+                                <option value="Aluno">Aluno</option>
+                                <option value="Comunidade">Comunidade</option>
+                                <option value="Funcionário">Funcionário</option>
+                                <option value="Outros">Outros</option>
+                                <option value="Professor">Professor</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="local_leitor_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Local do leitor:</label>
+                            <input type="text" style="width: 360px;" id="local_leitor_alterar" name="local_leitor_alterar" placeholder="Atualize a turma, disciplina, função ou local de trabalho" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="contato_leitor_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Contato:</label>
+                            <input type="text" style="width: 360px;" id="contato_leitor_alterar" name="contato_leitor_alterar" placeholder="Atualize o telefone e/ou e-mail (separados por ;)" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioAlterarLeitor()">Alterar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Excluir Leitores -->
+        <div id="modal_leitores_excluir" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_leitores_excluir')">&times;</span>
+                <h2 style="text-align: center;">Excluir cadastro de leitor no sistema</h2>
+
+                <form id="formLeitoresExcluir" action="#" method="POST">
+                    <div style="max-width: 80%; text-align: left; margin: 0 auto;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_leitor_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Código do leitor:</label>
+                            <input type="text" style="width: 150px; text-align: left;" id="codigo_leitor_excluir" name="codigo_leitor_excluir" placeholder="Insira o RA do leitor" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button id="buscarLeitoresExcluirBotao" type="button" onclick="buscarLeitorExcluir()">Buscar leitor</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="nome_leitor_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Nome do leitor:</label>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4);" id="nome_leitor_excluir" name="nome_leitor_excluir" placeholder="Confirme a informação antes da exclusão" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="funcao_leitor_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Função de leitor:</label>
+                            <select style="width: 100px; background-color: rgba(173, 216, 230, 0.4);" id="funcao_leitor_excluir" name="funcao_leitor_excluir" disabled>
+                            <option value="Aluno">Aluno</option>
+                            <option value="Comunidade">Comunidade</option>
+                            <option value="Funcionário">Funcionário</option>
+                            <option value="Outros">Outros</option>
+                            <option value="Professor">Professor</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="local_leitor_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Local do leitor:</label>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4);" id="local_leitor_excluir" name="local_leitor_excluir" placeholder="Confirme a informação antes da exclusão" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="contato_leitor_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Contato:</label>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4);" id="contato_leitor_excluir" name="contato_leitor_excluir" placeholder="Confirme a informação antes da exclusão" required readonly>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioExcluirLeitor()">Excluir</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Consultar Leitores -->
+        <div id="modal_leitores_consultar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_leitores_consultar')">&times;</span>
+                <h2 style="text-align: center;">Consultar cadastro de leitores no sistema</h2>
+
+                <div style="text-align: center;">
+                    <input type="checkbox" id="ativosCheckbox" name="filtro" value="Ativos" checked onclick="desmarcarOutras(this)">
+                    <label for="ativosCheckbox">Ativos</label>
+                    <input type="checkbox" id="excluidosCheckbox" name="filtro" value="Excluidos" onclick="desmarcarOutras(this)">
+                    <label for="excluidosCheckbox">Excluídos</label>
+                    <input type="checkbox" id="todosCheckbox" name="filtro" value="Total" onclick="desmarcarOutras(this)">
+                    <label for="todosCheckbox">Todos</label>
+                </div>
+
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" onclick="pesquisarLeitores()">Pesquisar</button>
+                </div>
+
+                <hr style="margin: 10px 0;">
+
+                <table id="leitoresTable" style="text-align: center; margin-top: 10px;">
+                   <tbody>
+                        <!-- As informações dos leitores serão inseridas aqui pelo JavaScript -->
+                   </tbody>
+                </table>
+
+                <div class="button-container" style="text-align: center; margin-top: 0px;">
+                    <button type="button" style="margin-right: 50px;" onclick="imprimirTabelaLeitores()">Imprimir</button>
+                    <button type="button" onclick="closeModal('modal_leitores_consultar')">Fechar</button>
+                </div>
+            </div>
+        </div>
+		
+        <footer>
+            &copy; Desenvolvido para o Projeto Integrador I - UNIVESP - 2024
+        </footer>
+
+        <script>
+
+        </script>
+    </body>
+</html>
