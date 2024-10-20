@@ -16,16 +16,16 @@ function getPage(pageName) {
 // *************************************************************************
 // Constantes globais
 // *************************************************************************
-const sheetLeitoresId = '1bI-Y3LppvhPX5MYmnqw8WOx9-eIEslxq1tqhUju8bvk';
+const sheetLeitoresId = '01234567890234567890123456789012345678901';
 const leitoresName = 'Leitores';
 
-const sheetLivrosId = '1EQzC7FbAZyDKz3EkWDje73pkCiIie9Ch8j5TLROUB6o';
+const sheetLivrosId = '01234567890234567890123456789012345678901';
 const livrosName = 'Livros';
 
-const sheetEmprestimosId = '1NhyJxK8jdnqI1Nj0cDtI6PPohttjXepILV6q__jRiwA';
+const sheetEmprestimosId = '01234567890234567890123456789012345678901';
 const emprestimosName = 'Emprestimos';
 
-const sheetUsuariosId = '15S41_Df3fo0SHYwuzcWeBPlQg9QZ6OD8l4KKXVGlTyg';
+const sheetUsuariosId = '01234567890234567890123456789012345678901';
 const usuariosName = 'Usuarios';
 
 // *************************************************************************
